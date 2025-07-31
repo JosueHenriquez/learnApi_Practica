@@ -36,7 +36,6 @@ public class CategoryService {
             throw new ExceptionCategoryNotFound("Error al registrar la categoría: " + e.getMessage());
         }
     }
-
     public CategoryDTO update(Long id, @Valid CategoryDTO jsonDTO) {
         if (jsonDTO == null){
             throw new IllegalArgumentException("La categoria no puede ser nula");
@@ -82,5 +81,11 @@ public class CategoryService {
         objEntity.setNombreCategoria(json.getNombreCategoria());
         objEntity.setFechaCreacion(json.getFechaCreacion());
         return objEntity;
+    }
+
+    public Page<CategoryDTO> getAllCategories(int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<CategoryEntity> pageEntity = repo.findAll(pageable);
+        return pageEntity.map(this::convertirADTO);
     }
 }
