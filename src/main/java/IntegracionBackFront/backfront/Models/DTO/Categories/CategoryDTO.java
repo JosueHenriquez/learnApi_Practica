@@ -1,5 +1,6 @@
 package IntegracionBackFront.backfront.Models.DTO.Categories;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.EqualsAndHashCode;
@@ -24,4 +25,5 @@ public class CategoryDTO {
 
     @PastOrPresent(message = "La fecha no puede ser futura")
     private LocalDate fechaCreacion;
+
 }
