@@ -26,24 +26,6 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @GetMapping("/getDataProducts")
-    private ResponseEntity<Page<ProductDTO>> getProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size){
-        if (size <= 0 || size > 50){
-            ResponseEntity.badRequest().body(Map.of(
-                    "status", "El tamaño de la página debe estar entre 1 y 50"
-            ));
-            return ResponseEntity.ok(null);
-        }
-        Page<ProductDTO> products = service.getAllProducts(page, size);
-        if (products == null){
-            ResponseEntity.badRequest().body(Map.of(
-                    "status", "Error al obtener los datos"
-            ));
-        }
-        return ResponseEntity.ok(products);
-    }
 
     @PostMapping("/newProduct")
     private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody ProductDTO json, HttpServletRequest request){

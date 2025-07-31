@@ -1,5 +1,4 @@
 package IntegracionBackFront.backfront.Services.Categories;
-
 import IntegracionBackFront.backfront.Entities.Categories.CategoryEntity;
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionCategoryNotFound;
 import IntegracionBackFront.backfront.Models.DTO.Categories.CategoryDTO;
@@ -31,7 +30,7 @@ public class CategoryService {
             CategoryEntity categoryEntity = convertirAEntity(jsonData);
             CategoryEntity categorySave = repo.save(categoryEntity);
             return convertirADTO(categorySave);
-        }catch (Exception e){
+         }catch (Exception e){
             log.error("Error al registrar categoría: " + e.getMessage());
             throw new ExceptionCategoryNotFound("Error al registrar la categoría: " + e.getMessage());
         }
@@ -82,5 +81,11 @@ public class CategoryService {
         objEntity.setNombreCategoria(json.getNombreCategoria());
         objEntity.setFechaCreacion(json.getFechaCreacion());
         return objEntity;
+    }
+
+    public Page<CategoryDTO> getAllCategories(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);//linea 1
+        Page<CategoryEntity> pageEntity = repo.findAll(pageable);
+        return pageEntity.map(this::convertirADTO);
     }
 }
