@@ -23,10 +23,13 @@ public class CategoryEntity {
     @SequenceGenerator(sequenceName = "seq_Categoria", name = "seq_Categoria", allocationSize = 1)
     @Column(name = "IDCATEGORIA")
     private Long idCategoria;
+
     @Column(name = "NOMBRECATEGORIA")
     private String nombreCategoria;
+
     @Column(name = "DESCRIPCION")
     private String descripcion;
+
     @Column(name = "FECHACREACION")
     private LocalDate fechaCreacion;
 }
