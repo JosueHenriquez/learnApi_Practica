@@ -27,6 +27,7 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+
     @GetMapping("/getAllProducts")
     private ResponseEntity<Page<ProductDTO>> getDataProducts(
             @RequestParam(defaultValue = "0") int page,
@@ -46,6 +47,7 @@ public class ProductController {
         }
         return ResponseEntity.ok(categories);
     }
+
 
     @PostMapping("/newProduct")
     private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody ProductDTO json, HttpServletRequest request){
