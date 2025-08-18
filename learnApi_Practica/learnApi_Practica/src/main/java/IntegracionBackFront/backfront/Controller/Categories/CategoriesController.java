@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,10 @@ public class CategoriesController {
     @PostMapping("/newCategory")
     private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody CategoryDTO json, HttpServletRequest request){
         try{
+            //Se captura la fecha actual en la que se hace el registro
+            LocalDate fechaActual = LocalDate.now();
+            json.setFechaCreacion(fechaActual);
+
             CategoryDTO response =service.insert(json);
             if (response == null){
                 return ResponseEntity.badRequest().body(Map.of(

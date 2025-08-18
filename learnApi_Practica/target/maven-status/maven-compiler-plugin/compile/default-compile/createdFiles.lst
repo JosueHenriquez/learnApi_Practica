@@ -6,12 +6,15 @@ IntegracionBackFront\backfront\Entities\Categories\CategoryEntity.class
 IntegracionBackFront\backfront\Controller\Products\ProductController.class
 IntegracionBackFront\backfront\Controller\Categories\CategoriesController.class
 IntegracionBackFront\backfront\BackfrontApplication.class
+IntegracionBackFront\backfront\Config\Cloudinary\CloudinaryConfig.class
 IntegracionBackFront\backfront\Exceptions\Category\ExceptionCategoryNotFound.class
 IntegracionBackFront\backfront\Services\Categories\CategoryService.class
 IntegracionBackFront\backfront\Models\DTO\Products\ProductDTO.class
 IntegracionBackFront\backfront\Models\DTO\Categories\CategoryDTO.class
+IntegracionBackFront\backfront\Services\Cloudinary\CloudinaryService.class
 IntegracionBackFront\backfront\Repositories\Categories\CategoryRepository.class
 IntegracionBackFront\backfront\Repositories\Products\ProductRepository.class
 IntegracionBackFront\backfront\Exceptions\Products\ExceptionProductDontRegister.class
+IntegracionBackFront\backfront\Controller\Cloudinary\ImageController.class
 IntegracionBackFront\backfront\Entities\Products\ProductEntity.class
 IntegracionBackFront\backfront\Exceptions\Products\ExceptionsNotFound.class

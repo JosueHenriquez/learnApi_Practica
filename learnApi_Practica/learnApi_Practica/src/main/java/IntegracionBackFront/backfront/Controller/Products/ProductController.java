@@ -1,10 +1,10 @@
-package IntegracionBackFront.backfront.Controller.Categories;
+package IntegracionBackFront.backfront.Controller.Products;
 
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionCategoryNotFound;
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionColumnDuplicate;
 import IntegracionBackFront.backfront.Models.DTO.Categories.CategoryDTO;
 import IntegracionBackFront.backfront.Models.DTO.Products.ProductDTO;
-import IntegracionBackFront.backfront.Services.Categories.CategoryService;
+import IntegracionBackFront.backfront.Services.Products.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +20,37 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/products")
 @CrossOrigin
-public class CategoriesController {
+public class ProductController {
 
-    //Inyectar la clase service
     @Autowired
-    private CategoryService service;
+    private ProductService service;
 
-    @GetMapping("/getDataCategories")
-    private ResponseEntity<List<CategoryDTO>> getData(){
-        //parte 1. Invocando al metodo getAllCategories contenido en el service y guardamos los datos
-        //en el objeto category.
-        //Si no hay datos category = null de lo contrario no será nulo
-        List<CategoryDTO> category = service.getAllCategories();
-        if (category == null){
+    @GetMapping("/getAllProducts")
+    private ResponseEntity<Page<ProductDTO>> getDataProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ){
+        if (size <= 0 || size > 50){
             ResponseEntity.badRequest().body(Map.of(
-                    "status", "No hay categorias registradas"
+                    "status", "El tamaño de la página debe estar entre 1 y 50"
+            ));
+            return ResponseEntity.ok(null);
+        }
+        Page<ProductDTO> categories = service.getAllProducts(page, size);
+        if (categories == null){
+            ResponseEntity.badRequest().body(Map.of(
+                    "status", "No hay productos registrados"
             ));
         }
-        return ResponseEntity.ok(category);
+        return ResponseEntity.ok(categories);
     }
 
-    @PostMapping("/newCategory")
-    private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody CategoryDTO json, HttpServletRequest request){
+    @PostMapping("/newProduct")
+    private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody ProductDTO json, HttpServletRequest request){
         try{
-            CategoryDTO response =service.insert(json);
+            ProductDTO response =service.insert(json);
             if (response == null){
                 return ResponseEntity.badRequest().body(Map.of(
                         "Error", "Inserción incorrecta",
@@ -67,10 +72,10 @@ public class CategoriesController {
         }
     }
 
-    @PutMapping("/updateCategory/{id}")
+    @PutMapping("/updateProduct/{id}")
     public ResponseEntity<?> modificarUsuario(
             @PathVariable Long id,
-            @Valid @RequestBody CategoryDTO usuario,
+            @Valid @RequestBody ProductDTO usuario,
             BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             Map<String, String> errores = new HashMap<>();
@@ -80,7 +85,7 @@ public class CategoriesController {
         }
 
         try{
-            CategoryDTO usuarioActualizado = service.update(id, usuario);
+            ProductDTO usuarioActualizado = service.update(id, usuario);
             return ResponseEntity.ok(usuarioActualizado);
         }
         catch (ExceptionCategoryNotFound e){
@@ -94,7 +99,7 @@ public class CategoriesController {
     }
 
     // Mapea este metodo a una petición DELETE con un parámetro de ruta {id}
-    @DeleteMapping("/deleteCategory/{id}")
+    @DeleteMapping("/deleteProduct/{id}")
     public ResponseEntity<Map<String, Object>> eliminarUsuario(@PathVariable Long id) {
         try {
             // Intenta eliminar la categoria usando objeto 'service'
