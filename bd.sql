@@ -122,3 +122,6 @@ INSERT INTO Productos (nombreProducto, descripcion, precio, stock, idCategoria, 
 ('Monitor LG 24"', 'Monitor Full HD 24" IPS, 75Hz', 149.99, 12, 3, 2);
 
 COMMIT;
+
+Alter table PRODUCTOS
+add (IMAGEN_URL varchar2(120) NULL);
