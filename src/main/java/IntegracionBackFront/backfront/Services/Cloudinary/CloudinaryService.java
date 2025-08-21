@@ -2,12 +2,16 @@ package IntegracionBackFront.backfront.Services.Cloudinary;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class CloudinaryService {
@@ -57,6 +61,28 @@ public class CloudinaryService {
         if (!file.getContentType().startsWith("image/")) throw new IllegalArgumentException("El archivo debe ser una imagen válida");
     }
 
-
     // Subir imagenes a una carpeta de Clodunary
+
+    public String uploadImage(MultipartFile file, String folder) throws IOException {
+        validateImage(file);
+        //cambiar el nombre de la imagen para proteger la API
+        String originalFileName = file.getOriginalFilename();
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+        String uniqueFilename= "img_" + UUID.randomUUID() + fileExtension;
+
+        Map<String, Object> option = ObjectUtils.asMap(
+                "folder", folder, //carpeta de destino
+                "public_id", uniqueFilename, //Nombre unico para el archivo
+                "use_filename", false, //no se puede usar el nombre original
+                "unique_filename", false, //ya generarmos nombre unico
+                "overwrite", false, //no sobreescribir archivos existentes
+                "resource_type", "auto",
+                "quality", "auto:good"
+
+        );
+        Map<?,?> uploadResult = cloudinary.uploader().upload(file.getBytes(),option);
+        return (String) uploadResult.get("secure_url");
+    }
+
+
 }
