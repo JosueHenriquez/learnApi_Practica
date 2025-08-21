@@ -49,8 +49,7 @@ public class CloudinaryService {
     }
 
     //Subir imagenes a una carpeta de Cloudinary
-    public String uploadImage(MultipartFile file, String folder) throws IOException{
-        validateImage(file);
+    public String uploadImage(MultipartFile file, String folder) throws IOException{validateImage(file);
         String originalFilename = file.getOriginalFilename();
         String fileExtensions = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
         String uniqueFilename = "img_" + UUID.randomUUID() + fileExtensions;
