@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class CloudinaryService {
@@ -38,6 +39,25 @@ public class CloudinaryService {
         return (String) uploadResult.get("secure_url");
     }
 
+    public String uploadImage(MultipartFile file, String folder) throws IOException{
+        validateImage(file);
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+        String uniqueFilenames = "img_" + UUID.randomUUID() + fileExtension;
+
+        Map<String, Object> options = ObjectUtils.asMap(
+                "folder", folder,        //Carpeta de destino
+                "public_id", uniqueFilenames,    //Nombre unico para el archio
+                "user_filename", false,         //No usar el nombre original
+                "unique_filename", false,       //No generar nombre unico (ya lo hicimos)
+                "overwrite", false,            //No sobreescribir archivos existetes
+                "resource_type", "auto",
+                "quality", "auto:good"
+        );
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
+        return  (String) uploadResult.get("secure_url");
+    }
+
     private void validateImage(MultipartFile file) {
         //1. Verificar si e archivo esta vacio
         if(file.isEmpty()) throw  new IllegalArgumentException(("El archivo no puede estar vacio"));
@@ -50,9 +70,6 @@ public class CloudinaryService {
         String extension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
         if (!Arrays.asList(ALLOWE_EXTENSIONS).contains(extension)) throw new IllegalArgumentException("Solo se permite archivos jpg, jpeg o png");
         if (!file.getContentType().startsWith("image/")) throw  new IllegalArgumentException("El archivo debe ser una imagen valida");
-
-
-
 
     }
 }
