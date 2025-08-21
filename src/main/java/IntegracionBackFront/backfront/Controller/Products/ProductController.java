@@ -2,6 +2,7 @@ package IntegracionBackFront.backfront.Controller.Products;
 
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionCategoryNotFound;
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionColumnDuplicate;
+import IntegracionBackFront.backfront.Models.DTO.Categories.CategoryDTO;
 import IntegracionBackFront.backfront.Models.DTO.Products.ProductDTO;
 import IntegracionBackFront.backfront.Services.Products.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,29 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+<<<<<<< HEAD
 
+=======
+    @GetMapping("/getAllProducts")
+    private ResponseEntity<Page<ProductDTO>> getDataProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ){
+        if (size <= 0 || size > 50){
+            ResponseEntity.badRequest().body(Map.of(
+                    "status", "El tamaño de la página debe estar entre 1 y 50"
+            ));
+            return ResponseEntity.ok(null);
+        }
+        Page<ProductDTO> categories = service.getAllProducts(page, size);
+        if (categories == null){
+            ResponseEntity.badRequest().body(Map.of(
+                    "status", "No hay productos registrados"
+            ));
+        }
+        return ResponseEntity.ok(categories);
+    }
+>>>>>>> a8f0ea12244f7fe0da29fc8e13893657babba411
 
     @PostMapping("/newProduct")
     private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody ProductDTO json, HttpServletRequest request){

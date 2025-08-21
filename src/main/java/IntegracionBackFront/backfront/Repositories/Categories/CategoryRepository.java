@@ -11,5 +11,8 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> {
     Page<CategoryEntity> findAll(Pageable pageable);
+<<<<<<< HEAD
 
+=======
+>>>>>>> a8f0ea12244f7fe0da29fc8e13893657babba411
 }
