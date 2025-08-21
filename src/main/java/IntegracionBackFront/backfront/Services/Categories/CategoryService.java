@@ -93,12 +93,10 @@ public class CategoryService {
     }
 
 
-    public Page<CategoryDTO> getAllCategories(int page, int size){
+    public Page<CategoryDTO> getAllCategories(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);//linea 1
         Page<CategoryEntity> pageEntity = repo.findAll(pageable);
-    public Page<CategoryDTO> getAllCategories(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size); //linea 1
-        Page<CategoryEntity> pageEntity = repo.findAll(pageable); // linea 2
         return pageEntity.map(this::convertirADTO);
     }
+
 }
