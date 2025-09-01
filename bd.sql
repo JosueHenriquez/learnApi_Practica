@@ -1,11 +1,3 @@
-CREATE USER C##BACKFRONT IDENTIFIED BY "backendfrontend"
-DEFAULT TABLESPACE "SYSTEM"
-TEMPORARY TABLESPACE "TEMP"
-
-GRANT CONNECT TO C##BACKFRONT;
-GRANT RESOURCE TO C##BACKFRONT;
-GRANT ALL PRIVILEGES TO C##BACKFRONT;
-
 -- Creación de secuencias para las llaves primarias
 CREATE SEQUENCE seq_TipoUsuario START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE seq_Usuario START WITH 1 INCREMENT BY 1;
@@ -52,6 +44,9 @@ CREATE TABLE Productos (
     CONSTRAINT fk_Productos_Categoria FOREIGN KEY (idCategoria) REFERENCES Categoria(idCategoria),
     CONSTRAINT fk_Productos_Usuario FOREIGN KEY (idUsuarioRegistro) REFERENCES Usuario(idUsuario)
 );
+
+ALTER TABLE PRODUCTOS 
+ADD (imagen_url VARCHAR2(120));
 
 -- Triggers para autoincrementar las llaves primarias usando las secuencias
 CREATE OR REPLACE TRIGGER trg_TipoUsuario

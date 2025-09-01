@@ -3,18 +3,17 @@ package IntegracionBackFront.backfront.Controller.Categories;
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionCategoryNotFound;
 import IntegracionBackFront.backfront.Exceptions.Category.ExceptionColumnDuplicate;
 import IntegracionBackFront.backfront.Models.DTO.Categories.CategoryDTO;
-import IntegracionBackFront.backfront.Models.DTO.Products.ProductDTO;
 import IntegracionBackFront.backfront.Services.Categories.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,7 @@ public class CategoriesController {
 
     @GetMapping("/getDataCategories")
     private ResponseEntity<List<CategoryDTO>> getData(){
-        //parte 1. Invocando al metodo getAllCategories contenido en el service y guardamos los datos
-        //en el objeto category.
+        //parte 1. Invocando al metodo getAllCategories contenido en el service y guardamos los datos en el objeto category.
         //Si no hay datos category = null de lo contrario no será nulo
         List<CategoryDTO> category = service.getAllCategories();
         if (category == null){
@@ -45,6 +43,11 @@ public class CategoriesController {
     @PostMapping("/newCategory")
     private ResponseEntity<Map<String, Object>> inserCategory(@Valid @RequestBody CategoryDTO json, HttpServletRequest request){
         try{
+
+            //Se captura la fecha actual en la que se hace el registro
+            LocalDate fechaActual = LocalDate.now();
+            json.setFechaCreacion(fechaActual);
+
             CategoryDTO response =service.insert(json);
             if (response == null){
                 return ResponseEntity.badRequest().body(Map.of(
