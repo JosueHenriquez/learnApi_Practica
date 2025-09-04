@@ -16,4 +16,8 @@ public class Argon2Password {
     public String EncryptPassword(String password){
         return argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password);
     }
+
+    public boolean VerifyPassword(String hashDB, String contrasena){
+        return argon2.verify(hashDB, contrasena);
+    }
 }
